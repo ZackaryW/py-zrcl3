@@ -1,11 +1,8 @@
 import warnings
+warnings.warn("It is not recommended to import directly from zrcl3.__init__ as this will tank performance.")
 def _warn_package_name(error):
 	package_name = str(error).split()[-1]
 	warnings.warn(f"Package missing: {package_name}")
-
-
-warnings.warn("It is not recommended to import directly from zrcl3.__init__ as this will tank performance.")
-
 
 try:
 	from zrcl3.desktop_automation import (
@@ -106,6 +103,14 @@ except ImportError as e:
 	_warn_package_name(e)
 	AutoClickCtx = None
 	AutoClickMarker = None
+
+try:
+	from zrcl3.auto_click.shell import (
+		auto_click_shell, 
+	)
+except ImportError as e:
+	_warn_package_name(e)
+	auto_click_shell = None
 
 try:
 	from zrcl3.auto_click import (
