@@ -13,7 +13,9 @@ def test_auto_click_on_zrcl():
     
     res = create_click_module(ctx, "zrcl3")
     ctx = click.Context(res)
-    shell = auto_click_shell("zrcl3")
+    
+    auto_click_shell("zrcl3")
+    
     assert isinstance(res, click.Group)
     assert len(res.commands) > 0
 

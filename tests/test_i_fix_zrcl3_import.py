@@ -12,11 +12,11 @@ def test_fix_zrcl_import_ast():
     fix_zrcl_import_ast("__test__.py")
     
     with open("__test__.py", "r") as f:
-        l = f.readlines()
-        assert l[0] == "import zrcl3\n"
-        assert l[1] == "from zrcl3.init_generator import generate_init as generate_init_2\n"
-        assert l[2] == "from zrcl3.auto_click import create_click_file\n"
-        assert l[3] == "from zrcl3.expirable_property import TimelyCachedProperty"
+        lin = f.readlines()
+        assert lin[0] == "import zrcl3\n"
+        assert lin[1] == "from zrcl3.init_generator import generate_init as generate_init_2\n"
+        assert lin[2] == "from zrcl3.auto_click import create_click_file\n"
+        assert lin[3] == "from zrcl3.expirable_property import TimelyCachedProperty"
     
     os.remove("__test__.py")
 
