@@ -7,11 +7,14 @@ for folder in os.listdir("zrcl3"):
 
 setup(
     name="zrcl3",
-    version="1.0.0",
+    version="1.0.2",
     packages=folders + ["zrcl3"],
     description="zack's common reusable library",
     author="ZackaryW",
     classifiers=[
         "Programming Language :: Python :: 3",
-    ]
+    ],
+    url="https://github.com/ZackaryW/py-zrcl3",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
 )
