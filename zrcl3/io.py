@@ -24,7 +24,7 @@ def _version_logic(bkup_path, bkup_name, file_ext, max_versions):
     # Return the new backup name as v1
     return f"{bkup_name}_v1{file_ext}"
 
-def create_bkup(path, bkup_path=None, max_versions=1, bkup_format="{name}.bak"):
+def create_bkup(path, bkup_path=None, max_versions=1, bkup_format="{name}.bak", delete_original=True):
     # Ensure the source file exists
     if not os.path.isfile(path):
         raise FileNotFoundError(f"No file found at the specified path: {path}")
@@ -48,3 +48,7 @@ def create_bkup(path, bkup_path=None, max_versions=1, bkup_format="{name}.bak"):
 
     # Create the backup
     shutil.copy2(path, os.path.join(bkup_path, bkup_name))
+    if delete_original:
+        os.remove(path)
+        
+        

@@ -15,7 +15,6 @@ def geninit_TryCatchErrNone(f : io.TextIOWrapper, pkg : dict):
     - f (io.TextIOWrapper): A file object for the __init__.py file where the import statements will be written.
     - pkg (dict): A dictionary where keys are module names and values are lists of elements to be imported from these modules.
     """
-    appended = set()
     tabcount =2
     
     for name, elements in pkg.items():
@@ -26,9 +25,8 @@ def geninit_TryCatchErrNone(f : io.TextIOWrapper, pkg : dict):
 
         f.write(f"from {name} import (\n")
         for element in elements:
-            element= _intelli_write_element(f, element, tabcount, appended)
+            element= _intelli_write_element(f, element, tabcount)
             temp_list.append(element)
-            appended.add(element)
 
         f.write("\t" * (tabcount-1))
         f.write(")\n")
@@ -48,8 +46,6 @@ def geninit_TryCatchErrWarning(f : io.TextIOWrapper, pkg : dict):
     - f (io.TextIOWrapper): A file object for the __init__.py file .
     - pkg (dict): A dictionary where keys are module names and values are lists of elements to be imported from these modules.
     """
-    
-    appended = set()
     tabcount =2
     
     # import warning
@@ -65,8 +61,7 @@ def geninit_TryCatchErrWarning(f : io.TextIOWrapper, pkg : dict):
 
         f.write(f"from {name} import (\n")
         for element in elements:
-            element= _intelli_write_element(f, element, tabcount, appended)
-            appended.add(element)
+            element= _intelli_write_element(f, element, tabcount)
 
         f.write("\t" * (tabcount-1))
         f.write(")\n")
@@ -78,7 +73,6 @@ def geninit_TryCatchErrWarning(f : io.TextIOWrapper, pkg : dict):
         f.write("\n")
 
 def geninit_combined(f : io.TextIOWrapper, pkg : dict):
-    appended = set()
     tabcount =2
     
     # import warning
@@ -96,9 +90,8 @@ def geninit_combined(f : io.TextIOWrapper, pkg : dict):
 
         f.write(f"from {name} import (\n")
         for element in elements:
-            element= _intelli_write_element(f, element, tabcount, appended)
+            element= _intelli_write_element(f, element, tabcount)
             temp_list.append(element)
-            appended.add(element)
 
         f.write("\t" * (tabcount-1))
         f.write(")\n")
@@ -113,7 +106,7 @@ def geninit_combined(f : io.TextIOWrapper, pkg : dict):
 
 def generate_init(
     directory : str, 
-    method : typing.Callable = geninit_TryCatchErrNone
+    method : typing.Callable = geninit_TryCatchErrNone,
 ):
     """
     Generates an __init__.py file in the specified directory using the provided method function.
@@ -125,13 +118,14 @@ def generate_init(
     - method (typing.Callable, optional): The function to use for generating the __init__.py file content. 
     Defaults to geninit_TryCatchErrNone.
     """
-    pkg = gather_init_vars(directory)
     
     if os.path.exists(os.path.join(directory, "__init__.py")):
         create_bkup(
             os.path.join(directory, "__init__.py"),
             os.getcwd(),
         )
+
+    pkg = gather_init_vars(directory, [os.path.join(directory, "__init__.py")])
 
     f = open(os.path.join(directory, "__init__.py"), "w")
 

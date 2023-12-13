@@ -2,21 +2,34 @@ import os
 from importlib.util import spec_from_file_location, module_from_spec
 import inspect
 import io
+import typing
 from zrcl3.list_module import get_imports_via_ast
 from zrcl3.io import create_bkup
 
-def gather_init_vars(directory : str):
+def gather_init_vars(directory : str, exclusions : list = [], excludeHidden : bool = True):
     pkg = {}
 
+    alradded = set()
+    
     for root, dirs, files in os.walk(directory):
         for file in files:
             if not file.endswith(".py"):
                 continue
-
+            
+            # if path in exclusions:
             pkg_path = os.path.join(root, file)
             pkg_name = pkg_path.replace("\\", ".").replace("/", ".").replace(".py", "")
             if pkg_name.endswith("__init__"):
                 pkg_name = pkg_name[:-9]
+            
+            pkg_folder = os.path.basename(os.path.dirname(pkg_path))
+            if pkg_folder.startswith("_") and excludeHidden:
+                continue
+                
+            if pkg_path in exclusions:
+                continue
+            if pkg_name in exclusions:
+                continue
             
             spec = spec_from_file_location(file, os.path.join(root, file))
             module = module_from_spec(spec)
@@ -36,47 +49,46 @@ def gather_init_vars(directory : str):
                     
                     if name in import_list or name in import_list.values():
                         continue
-
-                    pkg[pkg_name].append(name)
+                    
+                    if name not in alradded:
+                        pkg[pkg_name].append(name)
+                        alradded.add(name)
+                    elif (
+                        not name[-1].isdigit()
+                        and name[-2] != "_"
+                    ):
+                        name2 = f"{name}_2"
+                        pkg[pkg_name].append((name, name2))
+                        alradded.add(name2)
+                    else:
+                        name2 = f"{name[:-1]}{int(name[-1]) + 1}"
+                        pkg[pkg_name].append((name, name2))
+                        alradded.add(name2)
 
     pkg = {k: v for k, v in pkg.items() if len(v) > 0}
     
     return pkg
 
-def _intelli_write_element(f: io.TextIOWrapper, element: str, tabcount: int, alreadyAppended : set):
+def _intelli_write_element(f: io.TextIOWrapper, element: typing.Union[str, tuple], tabcount: int):
     f.write('\t' * tabcount)
-    f.write(f"{element}")
-    if element not in alreadyAppended:
-        element2 = element
-    elif (
-        not element[-1].isdigit()
-        and element[-2] != "_"
-    ):
-        element2 = f"{element}_2"
-        
+    if isinstance(element, tuple):
+        f.write(f"{element[0]}")
+        f.write(f" as {element[1]},\n")
+        return element[1]
     else:
-        element2 = f"{element[:-1]}{int(element[-1]) + 1}"
-
-    if element2 != element:
-        f.write(f" as {element2}")
-    f.write(", \n")
-
-    alreadyAppended.add(element2)
-    
-    return element2
+        f.write(f"{element}")
+        f.write(", \n")
+        return element
     
 
 def generate_init(directory : str, safe : bool = False):
-    pkg = gather_init_vars(directory)
+    pkg = gather_init_vars(directory, [os.path.join(directory, "__init__.py")])
     
     if os.path.exists(os.path.join(directory, "__init__.py")):
         create_bkup(
             os.path.join(directory, "__init__.py"),
             os.getcwd(),
         )
-
-    appended = set()
-    
     
     with open(os.path.join(directory, "__init__.py"), "w") as f:
         tabcount =1 if not safe else 2
@@ -90,10 +102,9 @@ def generate_init(directory : str, safe : bool = False):
 
             f.write(f"from {name} import (\n")
             for element in elements:
-                element = _intelli_write_element(f, element, tabcount, appended)
+                element = _intelli_write_element(f, element, tabcount)
                 temp_list.append(element)
-                appended.add(element)
-
+                
             f.write("\t" * (tabcount-1))
             f.write(")\n")
 

@@ -3,7 +3,9 @@ def _warn_package_name(error):
 	package_name = str(error).split()[-1]
 	warnings.warn(f"Package missing: {package_name}")
 
+
 warnings.warn("It is not recommended to import directly from zrcl3.__init__ as this will tank performance.")
+
 
 try:
 	from zrcl3.desktop_automation import (
@@ -152,7 +154,7 @@ except ImportError as e:
 try:
 	from zrcl3.init_generator import (
 		gather_init_vars, 
-		generate_init as generate_init_2, 
+		generate_init as generate_init_2,
 	)
 except ImportError as e:
 	_warn_package_name(e)
