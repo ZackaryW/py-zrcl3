@@ -18,7 +18,8 @@ def gather_init_vars(directory : str, exclusions : list = [], excludeHidden : bo
             
             # if path in exclusions:
             pkg_path = os.path.join(root, file)
-            pkg_name = pkg_path.replace("\\", ".").replace("/", ".").replace(".py", "")
+
+            pkg_name = os.path.relpath(pkg_path, directory).replace("\\", ".").replace("/", ".").replace(".py", "")
             if pkg_name.endswith("__init__"):
                 pkg_name = pkg_name[:-9]
             

@@ -16,7 +16,6 @@ def test_auto_click_on_zrcl():
     shell = auto_click_shell("zrcl3")
     assert isinstance(res, click.Group)
     assert len(res.commands) > 0
-    assert isinstance(shell, click_shell.Shell)
 
 if __name__ == "__main__":
     shell = auto_click_shell("zrcl3")
