@@ -15,5 +15,3 @@ class AutoClickMarker(TypedDict):
 @dataclass
 class AutoClickCtx:
     markers : typing.List[AutoClickMarker] = field(default_factory=list)
-
-    output : click.Group = None

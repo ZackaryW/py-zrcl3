@@ -1,10 +1,23 @@
 
+import logging
 import os
 import typing
 import click
 import inspect
 from importlib.util import module_from_spec, spec_from_file_location
 from zrcl3.auto_click.ctx import AutoClickCtx, AutoClickMarker
+
+"""def post_process(result):
+    # Your post-processing logic here
+    print("result:", result)
+
+def _with_postprocessing(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        post_process(result)
+        return result
+    return wrapper
+"""
 
 def create_click_command(func):
     """ Create a click command for a given function """
@@ -13,8 +26,9 @@ def create_click_command(func):
               else click.Option(['--' + param.name], default=param.default)
               for param in inspect.signature(func).parameters.values()]
 
-    # Create and return the click command
+    
     return click.Command(name=func.__name__, callback=func, params=params, help=func.__doc__)
+    
 
 def _match(ctx : AutoClickCtx, name : str, func : typing.Callable):
     for marker in ctx.markers:
@@ -48,7 +62,10 @@ def create_click_file(ctx : AutoClickCtx, file : str, group : click.Group = None
     
     for name, element in inspect.getmembers(module):
         if inspect.isfunction(element):
-            _function_parser(ctx, name, element, group)
+            try:
+                _function_parser(ctx, name, element, group)
+            except Exception:
+                logging.info(f"skipped parsing {file}.{element.__name__}")
 
 def create_click_folder(ctx : AutoClickCtx, path : str):
 
