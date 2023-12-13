@@ -6,6 +6,11 @@ zack's common reusable library
 pip install zrcl3
 ```
 
+install from github
+```bash
+pip install git+https://github.com/ZackaryW/py-zrcl3.git
+```
+
 ## Why the name
 * ZrCl3 is a catalyst, and unstable by itself (need other pieces for a working product)
 
