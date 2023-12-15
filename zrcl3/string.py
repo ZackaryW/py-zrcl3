@@ -1,6 +1,7 @@
 from functools import lru_cache
 import re
 import fnmatch
+from string import Formatter
 
 def is_valid_regex(pattern: str) -> bool:
     """
@@ -69,3 +70,32 @@ def match_patterns(string : str, patterns : list[str]):
             return True
     return False
 
+
+def rreplace(s : str, old :str, new : str, occurrence : int):
+    """
+    Replaces the last occurrence of a substring 'old' in a string 's' with a new substring 'new'.
+
+    Parameters:
+        s (str): The original string.
+        old (str): The substring to be replaced.
+        new (str): The substring to replace the old substring with.
+        occurrence (int): The number of occurrences of the old substring to replace.
+
+    Returns:
+        str: The modified string with the last occurrence of the old substring replaced.
+    """
+    
+    li = s.rsplit(old, occurrence)
+    return new.join(li)
+
+def format_vars(string :str):
+    """
+    Extracts variables from a given string by parsing it using the `Formatter().parse()` method.
+    
+    Args:
+        string (str): The string to extract variables from.
+        
+    Returns:
+        list: A list of extracted variables from the string.
+    """
+    return [fn for _, fn, _, _ in Formatter().parse(string) if fn is not None]
