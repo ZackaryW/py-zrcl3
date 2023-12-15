@@ -1,8 +1,6 @@
 import os
 import sys
 import pytest
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from zrcl3.init_generator import generate_init # noqa
 from zrcl3.init_generator.other_solution import (
     generate_init as gi, geninit_combined
