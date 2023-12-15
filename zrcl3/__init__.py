@@ -26,11 +26,13 @@ except ImportError as e:
 
 try:
 	from zrcl3.expirable_property import (
+		ExpireOnFileProperty, 
 		TimelyCachedProperty, 
 		time_sensitive_cache, 
 	)
 except ImportError as e:
 	_warn_package_name(e)
+	ExpireOnFileProperty = None
 	TimelyCachedProperty = None
 	time_sensitive_cache = None
 
@@ -69,6 +71,16 @@ except ImportError as e:
 	_warn_package_name(e)
 	get_imports = None
 	get_imports_via_ast = None
+
+try:
+	from zrcl3.misc import (
+		stringify_list, 
+		unpack_tuple, 
+	)
+except ImportError as e:
+	_warn_package_name(e)
+	stringify_list = None
+	unpack_tuple = None
 
 try:
 	from zrcl3.orjson_io_fallback import (
