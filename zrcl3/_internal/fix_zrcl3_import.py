@@ -16,7 +16,7 @@ def get_method_pkginfo(name : str):
 
 class ImportFromTransformer(ast.NodeTransformer):
     def visit_ImportFrom(self, node):
-        if node.module == "zrcl3":
+        if node.module == "zrcl3.lazy":
             package_methods = {}
             for alias in node.names:
                 pkginfo = get_method_pkginfo(alias.name)
@@ -30,7 +30,7 @@ class ImportFromTransformer(ast.NodeTransformer):
             for pkg, methods in package_methods.items():
                 new_aliases = [ast.alias(name=new_name, asname=None if old_name == new_name else old_name)
                                for old_name, new_name in methods]
-                new_node = ast.ImportFrom(module="zrcl3." + pkg,
+                new_node = ast.ImportFrom(module=pkg,
                                           names=new_aliases,
                                           level=0)
                 new_nodes.append(new_node)

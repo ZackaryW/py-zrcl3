@@ -83,16 +83,16 @@ def _intelli_write_element(f: io.TextIOWrapper, element: typing.Union[str, tuple
         return element
     
 
-def generate_init(directory : str, safe : bool = False):
+def generate_init(directory : str, safe : bool = False, targetFile : str = "__init__.py"):
     pkg = gather_init_vars(directory, [os.path.join(directory, "__init__.py")])
     
-    if os.path.exists(os.path.join(directory, "__init__.py")):
+    if os.path.exists(os.path.join(directory, targetFile)):
         create_bkup(
-            os.path.join(directory, "__init__.py"),
+            os.path.join(directory, targetFile),
             os.getcwd(),
         )
     
-    with open(os.path.join(directory, "__init__.py"), "w") as f:
+    with open(os.path.join(directory, targetFile), "w") as f:
         tabcount =1 if not safe else 2
         
         for name, elements in pkg.items():

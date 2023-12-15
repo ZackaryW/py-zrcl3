@@ -11,12 +11,12 @@ def test_generate():
     generate_init("zrcl3", safe=True)
     
 def test_generate_2():
-    warning_line = 'warnings.warn("It is not recommended to import directly from zrcl3.__init__ as this will tank performance.")'
-    gi("zrcl3", method=geninit_combined)
+    warning_line = 'warnings.warn("It is not recommended to import directly from zrcl3.lazy as this will tank performance.")'
+    gi("zrcl3", method=geninit_combined, targetFile="lazy.py")
     # insert line on line 2
-    with open("zrcl3/__init__.py", "r") as f:
+    with open("zrcl3/lazy.py", "r") as f:
         lines = f.readlines()
-    with open("zrcl3/__init__.py", "w") as f:
+    with open("zrcl3/lazy.py", "w") as f:
         # insert warning
         lines.insert(1, warning_line + "\n")
         f.writelines(lines)

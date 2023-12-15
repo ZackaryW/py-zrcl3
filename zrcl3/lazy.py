@@ -1,5 +1,5 @@
 import warnings
-warnings.warn("It is not recommended to import directly from zrcl3.__init__ as this will tank performance.")
+warnings.warn("It is not recommended to import directly from zrcl3.lazy as this will tank performance.")
 def _warn_package_name(error):
 	package_name = str(error).split()[-1]
 	warnings.warn(f"Package missing: {package_name}")

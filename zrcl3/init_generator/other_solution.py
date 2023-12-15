@@ -107,6 +107,7 @@ def geninit_combined(f : io.TextIOWrapper, pkg : dict):
 def generate_init(
     directory : str, 
     method : typing.Callable = geninit_TryCatchErrNone,
+    targetFile : str = "__init__.py"
 ):
     """
     Generates an __init__.py file in the specified directory using the provided method function.
@@ -119,15 +120,15 @@ def generate_init(
     Defaults to geninit_TryCatchErrNone.
     """
     
-    if os.path.exists(os.path.join(directory, "__init__.py")):
+    if os.path.exists(os.path.join(directory, targetFile)):
         create_bkup(
-            os.path.join(directory, "__init__.py"),
+            os.path.join(directory, targetFile),
             os.getcwd(),
         )
 
-    pkg = gather_init_vars(directory, [os.path.join(directory, "__init__.py")])
+    pkg = gather_init_vars(directory, [os.path.join(directory, targetFile)])
 
-    f = open(os.path.join(directory, "__init__.py"), "w")
+    f = open(os.path.join(directory, targetFile), "w")
 
     method(f, pkg)
     
