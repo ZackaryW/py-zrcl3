@@ -18,3 +18,9 @@ def is_program_installed(program):
     finally:
         null_device.close()
 
+def check_invalid_cmdlet(response : bytes):
+    if b"invalid cmdlet" in response:
+        return True
+    if b"is not recognized as an internal or external command" in response:
+        return True
+    return False
