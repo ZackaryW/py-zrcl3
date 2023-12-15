@@ -15,6 +15,16 @@ except ImportError as e:
 	find_word_coordinates = None
 
 try:
+	from zrcl3.dictionary import (
+		merge_dicts, 
+		merge_two_dict, 
+	)
+except ImportError as e:
+	_warn_package_name(e)
+	merge_dicts = None
+	merge_two_dict = None
+
+try:
 	from zrcl3.expirable_property import (
 		TimelyCachedProperty, 
 		time_sensitive_cache, 
@@ -31,6 +41,16 @@ try:
 except ImportError as e:
 	_warn_package_name(e)
 	download_github_repo_file = None
+
+try:
+	from zrcl3.image import (
+		base64_to_image, 
+		image_to_base64, 
+	)
+except ImportError as e:
+	_warn_package_name(e)
+	base64_to_image = None
+	image_to_base64 = None
 
 try:
 	from zrcl3.io import (
@@ -61,6 +81,14 @@ except ImportError as e:
 	save_json = None
 
 try:
+	from zrcl3.passcrack import (
+		crack_password, 
+	)
+except ImportError as e:
+	_warn_package_name(e)
+	crack_password = None
+
+try:
 	from zrcl3.singleton import (
 		SingletonMeta, 
 	)
@@ -69,11 +97,33 @@ except ImportError as e:
 	SingletonMeta = None
 
 try:
+	from zrcl3.string import (
+		format_vars, 
+		is_valid_regex, 
+		match_pattern, 
+		match_patterns, 
+		pattern_type, 
+		rreplace, 
+		simple_glob_pattern, 
+	)
+except ImportError as e:
+	_warn_package_name(e)
+	format_vars = None
+	is_valid_regex = None
+	match_pattern = None
+	match_patterns = None
+	pattern_type = None
+	rreplace = None
+	simple_glob_pattern = None
+
+try:
 	from zrcl3.subprocess import (
+		check_invalid_cmdlet, 
 		is_program_installed, 
 	)
 except ImportError as e:
 	_warn_package_name(e)
+	check_invalid_cmdlet = None
 	is_program_installed = None
 
 try:
@@ -143,6 +193,32 @@ except ImportError as e:
 	AutoSaveDict = None
 
 try:
+	from zrcl3.hackthon.caller import (
+		get_caller_func, 
+		get_caller_name, 
+		get_caller_trace, 
+		get_self_name, 
+	)
+except ImportError as e:
+	_warn_package_name(e)
+	get_caller_func = None
+	get_caller_name = None
+	get_caller_trace = None
+	get_self_name = None
+
+try:
+	from zrcl3.hackthon import (
+		DoNothing, 
+		lambda_constructor, 
+		typing_literal_generator, 
+	)
+except ImportError as e:
+	_warn_package_name(e)
+	DoNothing = None
+	lambda_constructor = None
+	typing_literal_generator = None
+
+try:
 	from zrcl3.init_generator.other_solution import (
 		generate_init, 
 		geninit_TryCatchErrNone, 
@@ -165,4 +241,26 @@ except ImportError as e:
 	_warn_package_name(e)
 	gather_init_vars = None
 	generate_init_2 = None
+
+try:
+	from zrcl3.mediawiki.parser import (
+		MediaWikiRaw, 
+		MediaWikiRawBlob, 
+		MediaWikiRawData, 
+		MediaWikiRawVar, 
+	)
+except ImportError as e:
+	_warn_package_name(e)
+	MediaWikiRaw = None
+	MediaWikiRawBlob = None
+	MediaWikiRawData = None
+	MediaWikiRawVar = None
+
+try:
+	from zrcl3.mediawiki import (
+		MediaWikiConfig, 
+	)
+except ImportError as e:
+	_warn_package_name(e)
+	MediaWikiConfig = None
 
