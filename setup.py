@@ -7,7 +7,7 @@ for folder in os.listdir("zrcl3"):
 
 setup(
     name="zrcl3",
-    version="1.0.3",
+    version="1.0.4",
     packages=folders + ["zrcl3"],
     description="zack's common reusable library",
     author="ZackaryW",
